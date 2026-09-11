@@ -1,10 +1,12 @@
 #include <Arduino.h>
 #include <M5Cardputer.h>
 #include "driver/keyboard/KeyboardDriver.h"
+#include "driver/screen/ScreenDriver.h"
 
 KeyboardDriver Keyboard;
+ScreenDriver Screen;
 
-String data = "";
+String data = "Hello, World!";
 
 void setup()
 {
@@ -13,12 +15,16 @@ void setup()
   M5Cardputer.begin(cfg, true);
 
   Keyboard.begin();
+  Screen.begin();
 }
 
 void loop()
 {
   M5Cardputer.update();
   Keyboard.update();
+  Screen.update(100, 2, WHITE, RED);
+  Screen.drawString(data, 4, M5Cardputer.Display.height() - 24, WHITE, BLACK, 2);
+  Screen.drawRect(10, 10, 50, 50, WHITE, 2, BLACK);
 
   if (Keyboard.is.Change() && Keyboard.is.Pressed())
   {
@@ -37,15 +43,6 @@ void loop()
     {
       data = "";
     }
-
-    int Height = M5Cardputer.Display.height();
-    int Width = M5Cardputer.Display.width();
-
-    // Efface l'ancien texte
-    M5Cardputer.Display.fillRect(0, Height - 28, Width, 25, BLACK);
-
-    // désine le nouvaux texte
-    M5Cardputer.Display.drawString(data, 4, Height - 24);
   }
   delay(100);
 }
