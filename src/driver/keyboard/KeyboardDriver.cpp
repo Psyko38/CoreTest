@@ -7,6 +7,7 @@ void KeyboardDriver::begin()
 
 void KeyboardDriver::update()
 {
+  M5Cardputer.update();
   _status = M5Cardputer.Keyboard.keysState();
 
   // Donne au sous-module key accès à l'état actuel
